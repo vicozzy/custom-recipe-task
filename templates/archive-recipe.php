@@ -66,27 +66,4 @@
     }
 </style>
 
-<script>
-    jQuery(document).ready(function ($) {
-        $('#recipe-filter-form').on('submit', function (e) {
-            e.preventDefault();
-
-            var formData = $(this).serialize();
-
-            $.ajax({
-                url: recipe_ajax.ajaxurl,
-                type: 'POST',
-                data: {
-                    action: 'recipe_filter',
-                    meal_type: $('#meal_type').val(),
-                    recipe_tag: $('#recipe_tag').val()
-                },
-                success: function (response) {
-                    $('#recipe-results').html(response.data);
-                }
-            });
-        });
-    });
-</script>
-
 <?php get_footer(); ?>

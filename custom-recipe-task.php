@@ -15,10 +15,12 @@ function recipe_enqueue_scripts() {
     wp_enqueue_style('recipe-style', plugins_url('/templates/single-recipe.css', __FILE__));
     #wp_enqueue_style( 'load-fa', 'https://use.fontawesome.com/releases/v5.5.0/css/all.css' );
 
+    wp_enqueue_script('jquery');
     wp_enqueue_script('recipe-ajax-filter', plugins_url('/includes/ajax-handler.js', __FILE__), array('jquery'), false, true);
     wp_localize_script('recipe-ajax-filter', 'recipe_ajax', array(
         'ajaxurl' => admin_url('admin-ajax.php')
     ));
+
 }
 add_action('wp_enqueue_scripts', 'recipe_enqueue_scripts');
 
@@ -26,18 +28,21 @@ add_action('wp_enqueue_scripts', 'recipe_enqueue_scripts');
 add_filter( 'template_include', 'insert_recipe_template' );
 function insert_recipe_template( $template )
 {
+    if (is_post_type_archive('recipe'))
+        return dirname( __FILE__ ) . '/templates/archive-recipe.php';
+
     if ( 'recipe' === get_post_type() )
         return dirname( __FILE__ ) . '/templates/single-recipe.php';
 
     return $template;
 }
-
+/* TODO: INCOMPLETE FEATURES
 // Register Gutenberg block
 require_once plugin_dir_path(__FILE__) . 'build/index.php';
 
 // Render Callback for block
 require_once plugin_dir_path(__FILE__) . 'includes/render_callback.php';
-
+*/
 // AJAX Handler
 require_once plugin_dir_path(__FILE__) . 'includes/ajax-handler.php';
 
